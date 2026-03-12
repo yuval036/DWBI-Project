@@ -114,8 +114,8 @@ CREATE TABLE fact.FactOrders(
 	ProductID INT NOT NULL,
 	Quantity INT NOT NULL, 
 	DiscountPercent DECIMAL(5,2) NOT NULL,
-	DiscountAmount DECIMAL(10,2) NOT NULL,
 	ShippingPercent DECIMAL(5,2) NOT NULL,
+	DiscountAmount DECIMAL(10,2) NOT NULL,
 	ShippingAmount DECIMAL(10,2) NOT NULL,
 	TotalAmount DECIMAL(12,2) NOT NULL,
 
