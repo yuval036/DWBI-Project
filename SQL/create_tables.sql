@@ -1,3 +1,6 @@
+===========================================================
+--Create Dimension Tables:
+===========================================================
 -----------------------------------------------------------
 --Create DimLoyaltyProgram table
 -----------------------------------------------------------
@@ -100,6 +103,9 @@ CREATE TABLE dim.DimStore(
 	ManagerName NVARCHAR(10)
 );
 
+===========================================================
+--Create Fact Tables:
+===========================================================
 -----------------------------------------------------------
 --Create FactOrders table
 -----------------------------------------------------------
@@ -123,4 +129,78 @@ CREATE TABLE fact.FactOrders(
 	FOREIGN KEY (ProductID) REFERENCES dim.DimProduct(ProductID),
 	FOREIGN KEY (StoreID) REFERENCES dim.DimStore(StoreID),
 	FOREIGN KEY (CustomerID) REFERENCES dim.DimCustomer(CustomerID)
+);
+
+===========================================================
+--Create Stage Tables:
+===========================================================
+-----------------------------------------------------------
+--Create DimCustomerRow table
+-----------------------------------------------------------
+IF OBJECT_ID('stage.DimCustomerRow', 'U') IS NOT NULL
+    DROP TABLE stage.DimCustomerRow;
+
+CREATE TABLE stage.DimCustomerRow(
+    FirstName NVARCHAR(100),
+    LastName NVARCHAR(100),
+    Gender NVARCHAR(10),
+    DateOfBirth DATE,
+    Email NVARCHAR(100),
+    PhoneNumber NVARCHAR(100),
+    [Address] NVARCHAR(100),
+    City NVARCHAR(100),
+    [State] NVARCHAR(100),
+    Country NVARCHAR(100),
+    ZipCode NVARCHAR(100),
+    LoyaltyProgramID INT
+);
+
+-----------------------------------------------------------
+--Create DimProductRow table
+-----------------------------------------------------------
+IF OBJECT_ID('stage.DimProductRow', 'U') IS NOT NULL
+    DROP TABLE stage.DimProductRow;
+
+CREATE TABLE stage.DimProductRow(
+    ProductName NVARCHAR(100),
+    Category NVARCHAR(100),
+    Brand NVARCHAR(100),
+    UnitPrice INT
+);
+
+-----------------------------------------------------------
+--Create DimStoreRow table
+-----------------------------------------------------------
+IF OBJECT_ID('stage.DimStoreRow', 'U') IS NOT NULL
+    DROP TABLE stage.DimStoreRow;
+
+CREATE TABLE stage.DimStoreRow(
+    StoreName NVARCHAR(100),
+    StoreType NVARCHAR(100),
+    StoreOpeningDate DATE, 
+    City NVARCHAR(100),
+    [State] NVARCHAR(100),
+    ZipCode NVARCHAR(100),
+    Country NVARCHAR(100),
+    Region NVARCHAR(10),
+    ManagerName NVARCHAR(10),
+);
+
+-----------------------------------------------------------
+--Create FactOrdersRow table
+-----------------------------------------------------------
+IF OBJECT_ID('stage.FactOrdersRow', 'U') IS NOT NULL
+    DROP TABLE stage.FactOrdersRow;
+
+CREATE TABLE stage.FactOrdersRow(
+    CustomerID INT, 
+    StoreID INT,
+    OrderDateID INT,
+    ProductID INT, 
+    Quantity INT, 
+    DiscountPercent DECIMAL(5,2),
+    ShippingPercent DECIMAL(5,2),
+    DiscountAmount DECIMAL(10,2),
+    ShippingAmount DECIMAL(10,2),
+    TotalAmount DECIMAL(12,2)
 );
